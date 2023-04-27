@@ -1,0 +1,95 @@
+[
+    {
+        "activite": "kayak",
+        "jours": {
+            "mardi": {
+                "creneau": "pm",
+                "horaires": "15h00-17h30"
+            },
+            "mercredi":{
+                "creneau": "am",
+                "horaires": "10h00-12h30"
+            },
+            "jeudi": {
+                "creneau": "pm",
+                "horaires": "14h00-17h30"
+            },
+            "vendredi": {
+                "creneau": "pm",
+                "horaires": "14h00-17h30"
+            },
+            "samedi": {
+                "creneau": "pm",
+                "horaires": "14h00-17h30"
+            }
+        }
+    },
+    {
+        "activite": "escalade",
+        "jours": {
+            "lundi": {
+                "creneau": "pm",
+                "horaires": "14h00-15h30"
+            },
+            "mardi": [{
+                "creneau": "am",
+                "horaires": "11h00-12h30"
+            },
+            {
+                "creneau": "pm",
+                "horaires": "16h00-17h30"
+            }],
+            "jeudi": {
+                "creneau": "pm",
+                "horaires": "14h00-17h30"
+            },
+            "vendredi": {
+                "creneau": "am",
+                "horaires": "9h30-11h00"
+            }
+        }
+    }, {
+        "activite": "cirque",
+        "jours": {
+            "lundi":{
+                "creneau": "pm",
+                "horaires": "16h00-17h30"
+            },
+            "jeudi": {
+                "creneau": "am",
+                "horaires": "9h30-11h00"
+            }
+        }
+    }, {
+        "activite": "tal",
+        "jours": {
+            "mardi":[{
+                "creneau": "am",
+                "horaires": "9h30-11h00"
+            },{
+                "creneau": "pm",
+                "horaires": "14h00-15h30"
+            }],
+            "jeudi": {
+                "creneau": "am",
+                "horaires": "11h00-12h30"
+            },
+            "vendredi": {
+                "creneau": "am",
+                "horaires": "11h00-12h30"
+            }
+        }
+    }, {
+        "activite": "paddle",
+        "jours": {
+            "mardi":{
+                "creneau": "pm",
+                "horaires": "18h00-19h30"
+            }
+        }
+    }, {
+        "activite": "accrobranche",
+        "jours": {}
+    }
+
+]
