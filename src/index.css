@@ -185,6 +185,10 @@ article h3{
   overflow: hidden;
 }
 
+.present{
+  background-color: #588E58;
+}
+
 /* PARTIE PLANNING */
 
 .planning-reservations{

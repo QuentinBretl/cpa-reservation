@@ -2,19 +2,18 @@ import React from 'react';
 import { FaCog } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import Actis from '../components/Actis';
-import { toast } from 'react-toastify'
+import { toast } from 'react-toastify';
 import { useAuthStatus } from '../hooks/useAuthStatus';
 
-const Home = ({ currentDay, formattedDate }) => {
+const Home = ({ currentDay, formattedDate, reloadActis }) => {
   const { loggedIn, checkingStatus } = useAuthStatus();
 
-  const onClick = (e) =>{
-   
-    if(!loggedIn){
-      e.preventDefault()
-      toast.error('Connectez-vous pour accéder aux paramètres.')
+  const onClick = (e) => {
+    if (!loggedIn) {
+      e.preventDefault();
+      toast.error('Connectez-vous pour accéder aux paramètres.');
     }
-  }
+  };
 
   return (
     <section className='content'>
@@ -28,7 +27,11 @@ const Home = ({ currentDay, formattedDate }) => {
             </Link>
           </h3>
         </div>
-        <Actis formattedDate={formattedDate} currentDay={currentDay} />
+        <Actis
+          formattedDate={formattedDate}
+          currentDay={currentDay}
+          reloadActis={reloadActis}
+        />
       </div>
     </section>
   );

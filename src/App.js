@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import Calendar from 'react-calendar';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  useNavigate,
+} from 'react-router-dom';
 import './Calendar.css';
 import moment from 'moment/moment';
 import 'moment/locale/fr';
@@ -16,7 +22,8 @@ import CreerReservation from './pages/CreerReservation';
 
 function App() {
   const [value, setValue] = useState(new Date());
-  let redirection = false;
+  const [reloadActis, setReloadActis] = useState(false);
+  const navigate = useNavigate();
   let currentDay =
     moment(value).locale('fr').format('dddd') +
     ' ' +
@@ -33,43 +40,47 @@ function App() {
   }, [value]);
 
   function onChange(nextValue) {
+    const newFormattedDate = moment(nextValue).format('DD-MM-YYYY');
     setValue(nextValue);
-    redirection = true;
+    navigate(`/${newFormattedDate}`);
+    setReloadActis((prevReloadActis) => !prevReloadActis);
   }
 
   return (
     <>
-      <BrowserRouter>
-        <div className='container'>
-          <main>
-            <section className='navigation'>
-              <Calendar value={value} onChange={onChange} />
-              <Navigation />
-            </section>
-            {redirection && <Navigate replace to='/' />}
-            <Routes>
-              <Route
-                path='/'
-                element={
-                  <Home currentDay={currentDay} formattedDate={formattedDate} />
-                }
-              ></Route>
-              <Route
-                path='/planning'
-                element={<Planning currentDay={currentDay} />}
-              ></Route>
-               <Route
-                path='/creer-reservation'
-                element={<CreerReservation currentDay={currentDay} />}
-              ></Route>
-              <Route path='/parametres' element={<PrivateRoute />}>
-                <Route path='/parametres' element={<Params />}></Route>
-              </Route>
-              <Route path='*' element={<NoMatch />}></Route>
-            </Routes>
-          </main>
-        </div>
-      </BrowserRouter>
+      <div className='container'>
+        <main>
+          <section className='navigation'>
+            <Calendar value={value} onChange={onChange} navigate={navigate} />
+            <Navigation />
+          </section>
+          <Routes>
+            <Route path='/' element={<Navigate to={`${formattedDate}`} />} />
+            <Route
+              path={'/:formattedDate'}
+              element={
+                <Home
+                  currentDay={currentDay}
+                  formattedDate={formattedDate}
+                  reloadActis={reloadActis}
+                />
+              }
+            />
+            <Route
+              path='/planning'
+              element={<Planning currentDay={currentDay} />}
+            ></Route>
+            <Route
+              path='/creer-reservation'
+              element={<CreerReservation currentDay={currentDay} />}
+            ></Route>
+            <Route path='/parametres' element={<PrivateRoute />}>
+              <Route path='/parametres' element={<Params />}></Route>
+            </Route>
+            <Route path='*' element={<NoMatch />}></Route>
+          </Routes>
+        </main>
+      </div>
       <ToastContainer position='bottom-right' theme='dark' />
     </>
   );

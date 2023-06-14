@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { FaPlus, FaTimes, FaUserPlus } from 'react-icons/fa';
-import { Link, useSearchParams, useNavigate } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import {
   collection,
   getDocs,
@@ -21,13 +21,12 @@ import moment from 'moment/moment';
 import 'moment/locale/fr';
 import Paiement from './Paiement';
 
-
 function TableResa({ creneau }) {
   const [currentActi, setCurrentActi] = useState(null);
   const [annuls, setAnnuls] = useState(null);
   const [resas, setResas] = useState(null);
   const { loggedIn, checkingStatus } = useAuthStatus();
-  const {data} = useActisInfos()
+  const { data } = useActisInfos();
   const [loading, setLoading] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
   const [showForm, setShowForm] = useState(false);
@@ -37,10 +36,8 @@ function TableResa({ creneau }) {
     date: searchParams.get('date'),
     creneau: creneau,
   });
-  const [nbAdultes, setNbAdultes] = useState(0)
-  const [day, setDay] = useState(null)
-
-  const navigate = useNavigate();
+  const [nbAdultes, setNbAdultes] = useState(0);
+  const [day, setDay] = useState(null);
 
   const onClick = (e) => {
     if (!loggedIn) {
@@ -90,9 +87,8 @@ function TableResa({ creneau }) {
     const dateString = searchParams.get('date');
     const dateObj = moment(dateString, 'DD-MM-YYYY');
     const dayName = dateObj.format('dddd');
-    setDay(dayName)
-  }
-
+    setDay(dayName);
+  };
 
   //Fetch DB
   useEffect(() => {
@@ -101,18 +97,17 @@ function TableResa({ creneau }) {
       console.log(pah);
     }
 
-    getDayDate()
+    getDayDate();
     const parseObject = async () => {
-      
-      if (day){
-        data.map((acti)=>{
-          console.log(acti.data.jours)
-        })
+      if (day) {
+        data.map((acti) => {
+          console.log(acti.data.jours);
+        });
       } else {
-        console.log("no day")
+        console.log('no day');
       }
-    }
-    parseObject()
+    };
+    parseObject();
 
     // Req à la bdd les annulations
     const fetchAnnulations = async () => {
@@ -173,17 +168,12 @@ function TableResa({ creneau }) {
     fetchResas();
     fetchAnnulations();
     console.log(resas);
-  
   }, []);
 
   return (
     <div className='table-container'>
-      {data && data.length > 0 && (
-        <h1>{data.map((acti)=>(
-          acti.data.acti
-        ))}</h1>
-        )}
-      
+      {data && data.length > 0 && <h1>{data.map((acti) => acti.data.acti)}</h1>}
+
       <div className='options'>
         <Link
           onClick={onClick}
@@ -240,12 +230,13 @@ function TableResa({ creneau }) {
                 <td>{resa.data.nb_adultes}</td>
                 <td>{resa.data.nb_enfants}</td>
                 <td>{resa.data.nb_bambins}</td>
-                <td>{resa.data.prix + " €"}</td>
+                <td>{resa.data.prix + ' €'}</td>
                 <td></td>
                 <td>{resa.data.auteur}</td>
                 <td></td>
-                <td><Paiement /></td>
-                
+                <td>
+                  <Paiement />
+                </td>
               </tr>
             ))}
           </tbody>

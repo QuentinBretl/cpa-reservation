@@ -25,11 +25,11 @@ function CreerReservation({ currentDay }) {
     nb_bambins: 0,
     prix: 0,
     auteur: auth.currentUser.displayName,
+    reglement: 0,
   });
 
   const { nom, mail, tel, nb_adultes, nb_enfants, nb_bambins, prix } = formData;
 
-  
   const navigate = useNavigate();
   const isMounted = useRef(true);
 
