@@ -8,12 +8,14 @@ import Kayak from '../assets/kayak.svg';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../firebase.config';
 import { toast } from 'react-toastify';
+import moment from 'moment/moment';
 
 function Actis({ formattedDate, currentDay }) {
   const [resas, setResas] = useState(null);
   const [loading, setLoading] = useState(true);
   const [actis, setActis] = useState(null);
   const [day, setDay] = useState(currentDay.replace(/ .*/, ''));
+  const [actisUnavailable, setActisUnavailable] = useState([])
   // Activités présentes ou non
   const [hasEscaladeActivity, setHasEscaladeActivity] = useState(false);
   const [hasKayakActivity, setHasKayakActivity] = useState(false);
@@ -47,7 +49,27 @@ function Actis({ formattedDate, currentDay }) {
       }
     };
 
+    const fetchActisUnavailable = async () => {
+      let actisUnavailableArray = []
+      try {
+        const actisRef = collection(db, 'actis');
+        const querySnapshot = await getDocs(actisRef);
+        querySnapshot.forEach((doc) => {
+ 
+          return actisUnavailableArray.push(doc.data())
+        })
+        
+        console.log(actisUnavailableArray)
+        setActisUnavailable(actisUnavailableArray)
+
+      } catch (error) {
+        toast.error('Impossible de charger les données...');
+        console.log(error);
+      }
+    };
+
     fetchActis();
+    fetchActisUnavailable()
   }, [formattedDate]);
 
   useEffect(() => {
@@ -83,6 +105,23 @@ function Actis({ formattedDate, currentDay }) {
       console.log(totalPersonsByActivity);
     }
   }, [actis, totalPersonsByActivity]);
+
+  useEffect(()=> {
+    if (actisUnavailable){
+      let actiDispo = []
+      actisUnavailable.forEach(activite => {
+        const jours = Object.keys(activite.jours)
+        jours.forEach(jour => {
+          if (jour === day){
+            actiDispo.push(activite.acti)
+          }
+          const creneau = activite.jours[jour].creneau;
+          const horaires = activite.jours[jour].horaires;
+        });
+        console.log(actiDispo)
+      });
+    }
+  }, [actisUnavailable])
   return (
     <div className='activities'>
       <h1 className='activities-title'>Activités</h1>
