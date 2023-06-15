@@ -189,6 +189,16 @@ article h3{
   background-color: #588E58;
 }
 
+.link-inexistant{
+  cursor: pointer;
+  pointer-events: none
+
+}
+
+.inexistant{
+  background-color: #939393;
+}
+
 /* PARTIE PLANNING */
 
 .planning-reservations{
