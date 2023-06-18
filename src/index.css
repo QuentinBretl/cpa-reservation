@@ -3,6 +3,7 @@
   --tertiary: #057cc4;
   --text: #564734;
   --color: #0c1821;
+  --red: #e31a10;
 }
 
 code {
@@ -187,6 +188,10 @@ article h3{
 
 .present{
   background-color: #588E58;
+}
+
+.annul{
+  background-color: var(--red);
 }
 
 .link-inexistant{

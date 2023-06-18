@@ -15,6 +15,7 @@ function Actis({ formattedDate, currentDay }) {
   const [loading, setLoading] = useState(true);
   const [actis, setActis] = useState(null);
   const [actisUnavailable, setActisUnavailable] = useState([]);
+  const [annulations, setAnnulations] = useState([])
   // Résa d'activités présentes ou non
   const [hasEscaladeActivity, setHasEscaladeActivity] = useState(false);
   const [hasKayakActivity, setHasKayakActivity] = useState(false);
@@ -28,6 +29,14 @@ function Actis({ formattedDate, currentDay }) {
 
   //Nombres de personnes enregistrées sur créneau:
   const [capacity, setCapacity] = useState(12);
+
+  //Créneaux annulés ou non
+  const [hasEscaladeAnnul, setHasEscaladeAnnul] = useState([]);
+  const [hasKayakAnnul, setHasKayakAnnul] = useState([]);
+  const [hasTalAnnul, setHasTalAnnul] = useState([]);
+  const [hasPahAnnul, setHasPahAnnul] = useState([]);
+  const [hasCirqueAnnul, setHasCirqueAnnul] = useState([]);
+  const [hasPaddleAnnul, setHasPaddleAnnul] = useState([]);
 
   useEffect(() => {
     const fetchActis = async () => {
@@ -69,8 +78,26 @@ function Actis({ formattedDate, currentDay }) {
         console.log(error);
       }
     };
+
+    const fetchAnnulations = async () => {
+      let annulationsArray = [];
+      try {
+        const annulsRef = collection(db, 'annulations');
+        const q = query(annulsRef, where('date', '==', formattedDate));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+          return annulationsArray.push(doc.data());
+        });
+        console.log(annulationsArray)
+        setAnnulations(annulationsArray);
+      } catch (error) {
+        toast.error('Impossible de charger les données...');
+        console.log(error);
+      }
+    };
     fetchActis();
     fetchActisUnavailable();
+    fetchAnnulations();
   }, [formattedDate]);
 
   useEffect(() => {
@@ -101,10 +128,38 @@ function Actis({ formattedDate, currentDay }) {
           /*const creneau = activite.jours[jour].creneau;
           const horaires = activite.jours[jour].horaires;*/
         });
-        console.log(actiDispo);
       });
     }
   }, [actisUnavailable]);
+
+  useEffect(() => {
+    if (annulations) {
+      function checkAnnulations(annulations, activity) {
+        const results = []
+        annulations.forEach((obj) => {
+          if (obj && obj.acti === activity) {
+            results.push(activity);
+          }
+        });
+
+        const count = annulations.filter((obj) => obj.acti === activity).length;
+        if (count === 1) {
+          results.push(1)
+        } else if (count === 2) {
+          results.push(2)
+        }
+        return results
+      }
+
+      setHasEscaladeAnnul(checkAnnulations(annulations, 'escalade'));
+      setHasKayakAnnul(checkAnnulations(annulations, 'kayak'));
+      setHasTalAnnul(checkAnnulations(annulations, 'tal'));
+      setHasPahAnnul(checkAnnulations(annulations, 'pah'));
+      setHasCirqueAnnul(checkAnnulations(annulations, 'cirque'));
+      setHasPaddleAnnul(checkAnnulations(annulations, 'paddle'));
+
+    }
+  }, [annulations]);
 
   function getTotalPersonsByActivity(actis) {
     const updatedTotalPersonsByActivity = {};
@@ -150,6 +205,8 @@ function Actis({ formattedDate, currentDay }) {
                 className={`activity ${
                   hasKayakActivity
                     ? 'present'
+                    : hasKayakAnnul.length !== 0 
+                    ? `annul`
                     : actiDispo.includes('kayak')
                     ? ''
                     : 'inexistant'
@@ -169,9 +226,11 @@ function Actis({ formattedDate, currentDay }) {
                   /{capacity}
                 </span>
               </p>
+            ) :actiDispo.includes('kayak') && hasKayakAnnul.length !== 0 ? (
+              <p>{hasKayakAnnul[1]} CRENEAU(X) ANNULES</p>
             ) : (
               <p>INDISPONIBLE</p>
-            )}
+            ) }
           </article>
           <article>
             <h3>ESCALADE</h3>
