@@ -137,18 +137,14 @@ function Actis({ formattedDate, currentDay }) {
       function checkAnnulations(annulations, activity) {
         const results = []
         annulations.forEach((obj) => {
-          if (obj && obj.acti === activity) {
-            results.push(activity);
-          }
-        });
-
         const count = annulations.filter((obj) => obj.acti === activity).length;
         if (count === 1) {
           results.push(1)
         } else if (count === 2) {
           results.push(2)
         }
-        return results
+        });
+      return results
       }
 
       setHasEscaladeAnnul(checkAnnulations(annulations, 'escalade'));
@@ -157,6 +153,7 @@ function Actis({ formattedDate, currentDay }) {
       setHasPahAnnul(checkAnnulations(annulations, 'pah'));
       setHasCirqueAnnul(checkAnnulations(annulations, 'cirque'));
       setHasPaddleAnnul(checkAnnulations(annulations, 'paddle'));
+      console.log(hasKayakAnnul)
 
     }
   }, [annulations]);
@@ -216,7 +213,9 @@ function Actis({ formattedDate, currentDay }) {
                 <img id='img-kayak' src={Kayak} alt='kayak' />
               </div>
             </Link>
-            {actiDispo.includes('kayak') ? (
+            { hasKayakAnnul.length !== 0 ? (
+              <p>{hasKayakAnnul.length} CRENEAU(X) ANNULES</p>
+            ) : actiDispo.includes('kayak') ? (
               <p>
                 Places restantes{' '}
                 <span>
@@ -226,9 +225,7 @@ function Actis({ formattedDate, currentDay }) {
                   /{capacity}
                 </span>
               </p>
-            ) :actiDispo.includes('kayak') && hasKayakAnnul.length !== 0 ? (
-              <p>{hasKayakAnnul[1]} CRENEAU(X) ANNULES</p>
-            ) : (
+            ) :  (
               <p>INDISPONIBLE</p>
             ) }
           </article>
