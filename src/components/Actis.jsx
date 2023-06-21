@@ -138,9 +138,9 @@ function Actis({ formattedDate, currentDay }) {
         const results = []
         annulations.forEach((obj) => {
         const count = annulations.filter((obj) => obj.acti === activity).length;
-        if (count === 1) {
+        if (count === 1 && obj.acti === activity) {
           results.push(1)
-        } else if (count === 2) {
+        } else if (count === 2 && obj.acti === activity) {
           results.push(2)
         }
         });
@@ -165,11 +165,18 @@ function Actis({ formattedDate, currentDay }) {
       const { acti, nb_adultes, nb_enfants, nb_bambins } = activite.data;
 
       const totalPersons =
-        parseInt(nb_adultes) + parseInt(nb_enfants) + parseInt(nb_bambins);
-      updatedTotalPersonsByActivity[acti] = totalPersons;
+      parseInt(nb_adultes) + parseInt(nb_enfants) + parseInt(nb_bambins);
+      if(isNaN(updatedTotalPersonsByActivity[acti])){
+        updatedTotalPersonsByActivity[acti] = totalPersons;
+      } else {
+        updatedTotalPersonsByActivity[acti] = updatedTotalPersonsByActivity[acti]+ totalPersons;
+      }
+      
     });
 
+    console.log(updatedTotalPersonsByActivity)
     return updatedTotalPersonsByActivity;
+   
   }
   useEffect(() => {
     if (actis) {
@@ -214,7 +221,7 @@ function Actis({ formattedDate, currentDay }) {
               </div>
             </Link>
             { hasKayakAnnul.length !== 0 ? (
-              <p>{hasKayakAnnul.length} CRENEAU(X) ANNULES</p>
+              <p>{hasKayakAnnul.length} CRENEAU(X) ANNULE(S)</p>
             ) : actiDispo.includes('kayak') ? (
               <p>
                 Places restantes{' '}
