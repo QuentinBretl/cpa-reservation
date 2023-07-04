@@ -153,7 +153,6 @@ function Actis({ formattedDate, currentDay }) {
       setHasPahAnnul(checkAnnulations(annulations, 'pah'));
       setHasCirqueAnnul(checkAnnulations(annulations, 'cirque'));
       setHasPaddleAnnul(checkAnnulations(annulations, 'paddle'));
-      console.log(hasKayakAnnul)
 
     }
   }, [annulations]);
@@ -248,6 +247,8 @@ function Actis({ formattedDate, currentDay }) {
                 className={`activity ${
                   hasEscaladeActivity
                     ? 'present'
+                    : hasEscaladeAnnul.length !== 0 
+                    ? `annul`
                     : actiDispo.includes('escalade')
                     ? ''
                     : 'inexistant'
@@ -257,7 +258,9 @@ function Actis({ formattedDate, currentDay }) {
                 <img id='img-escalade' src={Escalade} alt='escalade' />
               </div>
             </Link>
-            {actiDispo.includes('escalade') ? (
+            {hasEscaladeAnnul.length !== 0 ? (
+              <p>{hasEscaladeAnnul.length} CRENEAU(X) ANNULE(S)</p>
+            ) : actiDispo.includes('escalade') ? (
               <p>
                 Places restantes:
                 <span>
@@ -283,6 +286,8 @@ function Actis({ formattedDate, currentDay }) {
                 className={`activity ${
                   hasTalActivity
                     ? 'present'
+                    : hasTalAnnul.length !== 0 
+                    ? `annul`
                     : actiDispo.includes('tal')
                     ? ''
                     : 'inexistant'
@@ -292,7 +297,9 @@ function Actis({ formattedDate, currentDay }) {
                 <img id='img-tal' src={Tal} alt='Tir à l arc' />
               </div>
             </Link>
-            {actiDispo.includes('tal') ? (
+            {hasTalAnnul.length !== 0 ? (
+              <p>{hasTalAnnul.length} CRENEAU(X) ANNULE(S)</p>
+            ) : actiDispo.includes('tal') ? (
               <p>
                 Places restantes{' '}
                 <span>
@@ -318,6 +325,8 @@ function Actis({ formattedDate, currentDay }) {
                 className={`activity ${
                   hasPahActivity
                     ? 'present'
+                    : hasPahAnnul.length !== 0 
+                    ? `annul`
                     : actiDispo.includes('pah')
                     ? ''
                     : 'inexistant'
@@ -327,7 +336,9 @@ function Actis({ formattedDate, currentDay }) {
                 <img id='img-pah' src={Escalade} alt='accrobranche' />
               </div>
             </Link>
-            {actiDispo.includes('pah') ? (
+            {hasPahAnnul.length !== 0 ? (
+              <p>{hasPahAnnul.length} CRENEAU(X) ANNULE(S)</p>
+            ) : actiDispo.includes('pah') ? (
               <p>
                 Places restantes{' '}
                 <span>
@@ -353,6 +364,8 @@ function Actis({ formattedDate, currentDay }) {
                 className={`activity ${
                   hasCirqueActivity
                     ? 'present'
+                    : hasCirqueAnnul.length !== 0 
+                    ? `annul`
                     : actiDispo.includes('cirque')
                     ? ''
                     : 'inexistant'
@@ -362,7 +375,9 @@ function Actis({ formattedDate, currentDay }) {
                 <img id='img-cirque' src={Cirque} alt='cirque' />
               </div>
             </Link>
-            {actiDispo.includes('cirque') ? (
+            {hasCirqueAnnul.length !== 0 ? (
+              <p>{hasCirqueAnnul.length} CRENEAU(X) ANNULE(S)</p>
+            ) : actiDispo.includes('cirque') ? (
               <p>
                 Places restantes{' '}
                 <span>
@@ -388,6 +403,8 @@ function Actis({ formattedDate, currentDay }) {
                 className={`activity ${
                   hasPaddleActivity
                     ? 'present'
+                    : hasPaddleAnnul.length !== 0 
+                    ? `annul`
                     : actiDispo.includes('paddle')
                     ? ''
                     : 'inexistant'
@@ -397,7 +414,9 @@ function Actis({ formattedDate, currentDay }) {
                 <img id='img-paddle' src={Paddle} alt='paddle' />
               </div>
             </Link>
-            {actiDispo.includes('paddle') ? (
+            {hasPaddleAnnul.length !== 0 ? (
+              <p>{hasPaddleAnnul.length} CRENEAU(X) ANNULE(S)</p>
+            ) : actiDispo.includes('paddle') ? (
               <p>
                 Places restantes{' '}
                 <span>
