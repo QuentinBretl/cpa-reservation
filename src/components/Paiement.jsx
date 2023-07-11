@@ -17,8 +17,8 @@ function Paiement() {
             <option value="option1">C.B</option>
             <option value="option2">Chèque</option>
             <option value="option3">Espèces</option>
-            <option value="option3">Ch. Vac.</option>
-            <option value="option3">Bon Cad.</option>
+            <option value="option4">Ch. Vac.</option>
+            <option value="option5">Bon Cad.</option>
           </select>
         </label>
       </div>

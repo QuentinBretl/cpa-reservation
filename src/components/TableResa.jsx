@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { FaPlus, FaTimes, FaUserPlus } from 'react-icons/fa';
+import { FaPlus, FaTimes, FaUserPlus, FaEdit, FaMinusSquare } from 'react-icons/fa';
 import { Link, useSearchParams } from 'react-router-dom';
 import {
   collection,
@@ -174,8 +174,17 @@ function TableResa({ creneau }) {
     <div className='table-container'>
       {data && data.length > 0 && <h1>{data.map((acti) => acti.data.acti)}</h1>}
 
-      <div className='options'>
-        <Link
+     
+        {annuls && annuls.length > 0 ? (
+           <div className='options'>
+          <button className='maintain-slot' onClick={onClickMaintainSlot}>
+            <FaTimes className='remove-slot-icon' />
+            <h3>Maintenir</h3>
+          </button>
+          </div>
+        ) : (
+          <div className='options'>
+          <Link
           onClick={onClick}
           className='add-button'
           to={`/creer-reservation?acti=${searchParams.get(
@@ -188,18 +197,11 @@ function TableResa({ creneau }) {
             <h3>Ajouter</h3>
           </button>
         </Link>
-        {annuls && annuls.length > 0 ? (
-          <button className='maintain-slot' onClick={onClickMaintainSlot}>
-            <FaTimes className='remove-slot-icon' />
-            <h3>Maintenir</h3>
-          </button>
-        ) : (
           <button className='remove-slot' onClick={onClickRemoveSlot}>
             <FaTimes className='remove-slot-icon' />
             <h3>Annuler</h3>
           </button>
-        )}
-      </div>
+        </div>)}
       {loading ? (
         <h1> </h1>
       ) : annuls && annuls.length > 0 ? (
@@ -231,11 +233,14 @@ function TableResa({ creneau }) {
                 <td>{resa.data.nb_enfants}</td>
                 <td>{resa.data.nb_bambins}</td>
                 <td>{resa.data.prix + ' €'}</td>
-                <td></td>
+                <td><FaEdit />
+                <FaMinusSquare /></td>
                 <td>{resa.data.auteur}</td>
                 <td></td>
                 <td>
-                  <Paiement />
+                {resa.data.reglement === 0 ? (
+                <span>Non reglé</span>
+      ) : (<span>Reglé par {resa.data.reglement}</span>)}
                 </td>
               </tr>
             ))}
