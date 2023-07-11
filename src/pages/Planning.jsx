@@ -24,7 +24,7 @@ function Planning({ currentDay }) {
       <div className='planning'>
         <div className='heading'>
           <h3>
-            <Link className='back' to='/'>
+            <Link className='back' to={`/${searchParams.get('date')}`}>
               <FaArrowLeft />
             </Link>
           </h3>

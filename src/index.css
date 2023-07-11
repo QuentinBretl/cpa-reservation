@@ -4,6 +4,7 @@
   --text: #564734;
   --color: #0c1821;
   --red: #e31a10;
+  --orange: #ff6600;
 }
 
 code {
@@ -260,7 +261,7 @@ article h3{
   width: 100px;
   padding: 5px 5px 5px 0px;
   border-radius: 8px;
-  background-color: #ff6600;
+  background-color: var(--orange);
   color: #fff;
   cursor: pointer;
 }
@@ -390,4 +391,19 @@ th{
 .send-data:hover{
   cursor: pointer;
   background-color: #057cc4;
+}
+
+.options-td{
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.edit-icon{
+  font-size: 22px;
+  color: var(--orange);
+}
+
+.delete-icon{
+  font-size: 22px;
+  color: var(--red);
 }

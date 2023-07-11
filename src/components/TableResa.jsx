@@ -8,6 +8,7 @@ import {
   doc,
   addDoc,
   deleteDoc,
+  updateDoc,
   query,
   where,
   orderBy,
@@ -90,6 +91,38 @@ function TableResa({ creneau }) {
     setDay(dayName);
   };
 
+  const handleEdit = async (resa) => {
+
+  
+    try {
+      const docRef = doc(db, 'resas', resa.id);
+      await updateDoc(docRef, resa);
+      // La réservation a été mise à jour avec succès
+    } catch (error) {
+      // Gérez les erreurs lors de la mise à jour de la réservation
+    }
+  };
+  
+  const handleDelete = async (resa) => {
+    try {
+      const docRef = doc(db, 'resas', resa.id);
+      if (!loggedIn) {
+        toast.error('Connectez-vous pour pouvoir supprimer la réservation');
+      } else {
+        let confirmation = window.confirm(
+          'Etes vous sur de vouloir supprimer la réservation ? Cette action est définitive'
+        );
+        if (confirmation) {
+          await deleteDoc(docRef, resa);
+          window.location.reload(false);
+        } else {
+        }
+      }
+    } catch (error) {
+      // Gérez les erreurs lors de la suppression de la réservation
+    }
+  };
+
   //Fetch DB
   useEffect(() => {
     if (searchParams.get('acti') === 'pah') {
@@ -170,6 +203,24 @@ function TableResa({ creneau }) {
     console.log(resas);
   }, []);
 
+  const convertTimestamp = (timestamp) => {
+    let firebaseDate = timestamp.toDate();
+    let dd = firebaseDate.getDate(); // Declare dd here
+    let mm = firebaseDate.getMonth(); // Declare mm here
+    
+    if (dd < 10) {
+      dd = '0' + dd;
+    }
+    
+    if (mm < 10) {
+      mm = '0' + mm;
+    }
+
+    let yyyy = firebaseDate.getFullYear();
+    firebaseDate = dd + '/' + mm + '/' + yyyy;
+    return firebaseDate;
+  }
+
   return (
     <div className='table-container'>
       {data && data.length > 0 && <h1>{data.map((acti) => acti.data.acti)}</h1>}
@@ -219,7 +270,7 @@ function TableResa({ creneau }) {
               <th>Prix</th>
               <th>Actions</th>
               <th>Créée par</th>
-              <th>A</th>
+              <th>Le</th>
               <th className='paiement'>Reglé par ?</th>
             </tr>
           </thead>
@@ -233,14 +284,16 @@ function TableResa({ creneau }) {
                 <td>{resa.data.nb_enfants}</td>
                 <td>{resa.data.nb_bambins}</td>
                 <td>{resa.data.prix + ' €'}</td>
-                <td><FaEdit />
-                <FaMinusSquare /></td>
+                <td>
+                  <div className='options-td'><FaEdit className='edit-icon' onClick={() => handleEdit(resa)}/>
+                <FaMinusSquare className='delete-icon' onClick={() => handleDelete(resa)}/></div>
+                </td>
                 <td>{resa.data.auteur}</td>
-                <td></td>
+                <td>{convertTimestamp(resa.data.timestamp)}</td>
                 <td>
                 {resa.data.reglement === 0 ? (
                 <span>Non reglé</span>
-      ) : (<span>Reglé par {resa.data.reglement}</span>)}
+      ) : (<span>{resa.data.reglement}</span>)}
                 </td>
               </tr>
             ))}
