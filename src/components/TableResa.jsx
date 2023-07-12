@@ -39,6 +39,7 @@ function TableResa({ creneau }) {
   });
   const [nbAdultes, setNbAdultes] = useState(0);
   const [day, setDay] = useState(null);
+  const [editData, setEditData] = useState(null);
 
   const onClick = (e) => {
     if (!loggedIn) {
@@ -94,13 +95,15 @@ function TableResa({ creneau }) {
   const handleEdit = async (resa) => {
 
   
-    try {
+    /*try {
       const docRef = doc(db, 'resas', resa.id);
       await updateDoc(docRef, resa);
       // La réservation a été mise à jour avec succès
     } catch (error) {
       // Gérez les erreurs lors de la mise à jour de la réservation
-    }
+    }*/
+
+    setEditData(resa);
   };
   
   const handleDelete = async (resa) => {
@@ -113,10 +116,11 @@ function TableResa({ creneau }) {
           'Etes vous sur de vouloir supprimer la réservation ? Cette action est définitive'
         );
         if (confirmation) {
-          await deleteDoc(docRef, resa);
-          window.location.reload(false);
-        } else {
-        }
+          console.log(resa)
+          await deleteDoc(docRef);
+          
+          window.location.reload(false)
+        } 
       }
     } catch (error) {
       // Gérez les erreurs lors de la suppression de la réservation
