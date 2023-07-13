@@ -336,13 +336,14 @@ th, td{
 }
 
 td{
-  border: 2px solid var(--tertiary)
+  border: 2px solid var(--tertiary);
 }
 
 th{
   background-color: #057cc4;
   color: white;
   border: 2px solid white;
+  border-bottom: none;
 }
 
 .paiement{
@@ -396,6 +397,22 @@ th{
 .options-td{
   display: flex;
   justify-content: space-evenly;
+}
+
+.edit-td{
+  padding:0;
+  position: relative;
+}
+
+.input-td{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 5px;
+  border: none;
 }
 
 .edit-icon{

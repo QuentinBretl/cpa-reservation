@@ -1,28 +1,74 @@
+import React, { useState } from 'react';
 
-import { useState } from 'react';
-import React from 'react'
+function Paiement({ reglement, handleOptionChange }) {
+  const [selectedOptions, setSelectedOptions] = useState(reglement || []);
 
-function Paiement() {
-    const [selectedOption, setSelectedOption] = useState("Non reglé");
+  const handleCheckboxChange = (event) => {
+    const option = event.target.value;
+    const isChecked = event.target.checked;
 
-    function handleOptionChange(event) {
-      setSelectedOption(event.target.value);
+    if (isChecked) {
+      setSelectedOptions([...selectedOptions, option]);
+    } else {
+      setSelectedOptions(selectedOptions.filter((value) => value !== option));
     }
-  
-    return (
-      <div>
-        <label>
-          <select value={selectedOption} onChange={handleOptionChange}>
-            <option value="optionDef">Non reglé</option>
-            <option value="option1">C.B</option>
-            <option value="option2">Chèque</option>
-            <option value="option3">Espèces</option>
-            <option value="option4">Ch. Vac.</option>
-            <option value="option5">Bon Cad.</option>
-          </select>
-        </label>
-      </div>
-    );
-  }
+  };
 
-export default Paiement
+  // Appeler la fonction handleOptionChange du parent chaque fois que les options changent
+  // en passant les options sélectionnées en tant qu'argument
+  React.useEffect(() => {
+    handleOptionChange(selectedOptions);
+  }, [selectedOptions, handleOptionChange]);
+
+  return (
+    <>
+      <label>
+        <input
+          type="checkbox"
+          value="option1"
+          checked={selectedOptions.includes('option1')}
+          onChange={handleCheckboxChange}
+        />
+        C.B
+      </label>
+      <label>
+        <input
+          type="checkbox"
+          value="option2"
+          checked={selectedOptions.includes('option2')}
+          onChange={handleCheckboxChange}
+        />
+        Chèque
+      </label>
+      <label>
+        <input
+          type="checkbox"
+          value="option3"
+          checked={selectedOptions.includes('option3')}
+          onChange={handleCheckboxChange}
+        />
+        Espèces
+      </label>
+      <label>
+        <input
+          type="checkbox"
+          value="option4"
+          checked={selectedOptions.includes('option4')}
+          onChange={handleCheckboxChange}
+        />
+        Ch. Vac.
+      </label>
+      <label>
+        <input
+          type="checkbox"
+          value="option5"
+          checked={selectedOptions.includes('option5')}
+          onChange={handleCheckboxChange}
+        />
+        Bon Cad.
+      </label>
+    </>
+  );
+}
+
+export default Paiement;

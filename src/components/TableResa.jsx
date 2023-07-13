@@ -93,18 +93,15 @@ function TableResa({ creneau }) {
   };
 
   const handleEdit = async (resa) => {
-
-  
-    /*try {
-      const docRef = doc(db, 'resas', resa.id);
-      await updateDoc(docRef, resa);
-      // La réservation a été mise à jour avec succès
-    } catch (error) {
-      // Gérez les erreurs lors de la mise à jour de la réservation
-    }*/
-
     setEditData(resa);
   };
+  
+  function handleOptionChange(resa, selectedOptions) {
+    const updatedResa = { ...resa };
+    updatedResa.data.reglement = selectedOptions;
+    setEditData(updatedResa);
+  }
+  
   
   const handleDelete = async (resa) => {
     try {
@@ -116,9 +113,7 @@ function TableResa({ creneau }) {
           'Etes vous sur de vouloir supprimer la réservation ? Cette action est définitive'
         );
         if (confirmation) {
-          console.log(resa)
           await deleteDoc(docRef);
-          
           window.location.reload(false)
         } 
       }
@@ -126,6 +121,8 @@ function TableResa({ creneau }) {
       // Gérez les erreurs lors de la suppression de la réservation
     }
   };
+
+
 
   //Fetch DB
   useEffect(() => {
@@ -225,6 +222,20 @@ function TableResa({ creneau }) {
     return firebaseDate;
   }
 
+  const saveChanges = async () => {
+    try {
+      const docRef = doc(db, 'resas', editData.id);
+      await updateDoc(docRef, editData.data);
+      // La réservation a été mise à jour avec succès
+      setEditData(null); // Réinitialisez l'état editData pour revenir à l'affichage normal
+      window.location.reload(false)
+    } catch (error) {
+      // Gérez les erreurs lors de la mise à jour de la réservation
+      throw error
+    }
+
+};
+
   return (
     <div className='table-container'>
       {data && data.length > 0 && <h1>{data.map((acti) => acti.data.acti)}</h1>}
@@ -279,28 +290,119 @@ function TableResa({ creneau }) {
             </tr>
           </thead>
           <tbody>
-            {resas.map((resa) => (
-              <tr key={resa.id}>
-                <td>{resa.data.nom}</td>
-                <td>{resa.data.mail}</td>
-                <td>{resa.data.tel}</td>
-                <td>{resa.data.nb_adultes}</td>
-                <td>{resa.data.nb_enfants}</td>
-                <td>{resa.data.nb_bambins}</td>
-                <td>{resa.data.prix + ' €'}</td>
-                <td>
-                  <div className='options-td'><FaEdit className='edit-icon' onClick={() => handleEdit(resa)}/>
-                <FaMinusSquare className='delete-icon' onClick={() => handleDelete(resa)}/></div>
-                </td>
-                <td>{resa.data.auteur}</td>
-                <td>{convertTimestamp(resa.data.timestamp)}</td>
-                <td>
-                {resa.data.reglement === 0 ? (
-                <span>Non reglé</span>
-      ) : (<span>{resa.data.reglement}</span>)}
-                </td>
-              </tr>
-            ))}
+          {resas.map((resa) => (
+  <tr key={resa.id}>
+    {editData && editData.id === resa.id ? (
+      <>
+        <td className='edit-td'>
+          <input
+            className='input-td'
+            type="text"
+            value={editData.data.nom}
+            onChange={(e) => setEditData({ ...editData, data: { ...editData.data, nom: e.target.value } })}
+          />
+        </td>
+        <td className='edit-td'>
+          <input
+            className='input-td'
+            type="email"
+            value={editData.data.mail}
+            onChange={(e) => setEditData({ ...editData, data: { ...editData.data, mail: e.target.value } })}
+          />
+        </td>
+        <td className='edit-td'>
+          <input
+            className='input-td'
+            type="text"
+            value={editData.data.tel}
+            onChange={(e) => setEditData({ ...editData, data: { ...editData.data, tel: e.target.value } })}
+          />
+        </td>
+        <td className='edit-td'>
+          <input
+            className='input-td'
+            type='number'
+            value={editData.data.nb_adultes}
+            min='0'
+            max='12'
+            onChange={(e) => setEditData({ ...editData, data: { ...editData.data, nb_adultes: e.target.value } })}
+          />
+        </td>
+        <td className='edit-td'>
+          <input
+            className='input-td'
+            type='number'
+            value={editData.data.nb_enfants}
+            min='0'
+            max='12'
+            onChange={(e) => setEditData({ ...editData, data: { ...editData.data, nb_enfants: e.target.value } })}
+          />
+        </td>
+        <td className='edit-td'>
+          <input
+            className='input-td'
+            type='number'
+            value={editData.data.nb_bambins}
+            min='0'
+            max='12'
+            onChange={(e) => setEditData({ ...editData, data: { ...editData.data, nb_bambins: e.target.value } })}
+          />
+        </td>
+        <td className='edit-td'>
+          <input
+            className='input-td'
+            type="number"
+            value={editData.data.prix}
+            onChange={(e) => setEditData({ ...editData, data: { ...editData.data, prix: e.target.value } })}
+          />
+        </td>
+        <td>
+        <button onClick={() => saveChanges()}>Enregistrer</button>
+        </td>
+        <td>
+        {resa.data.auteur}
+        </td>
+        <td>
+        {convertTimestamp(resa.data.timestamp)}
+        </td>
+        
+        <td className='edit-td'>
+        <input
+            className='input-td'
+            type="text"
+            value={editData.data.reglement}
+            onChange={(e) => setEditData({ ...editData, data: { ...editData.data, reglement: e.target.value } })}
+          />
+        </td>
+      </>
+    ) : (
+      <>
+        <td>{resa.data.nom}</td>
+        <td>{resa.data.mail}</td>
+        <td>{resa.data.tel}</td>
+        <td>{resa.data.nb_adultes}</td>
+        <td>{resa.data.nb_enfants}</td>
+        <td>{resa.data.nb_bambins}</td>
+        <td>{resa.data.prix + ' €'}</td>
+        <td>
+          <div className='options-td'>
+            <FaEdit className='edit-icon' onClick={() => handleEdit(resa)} />
+            <FaMinusSquare className='delete-icon' onClick={() => handleDelete(resa)} />
+          </div>
+        </td>
+        <td>{resa.data.auteur}</td>
+        <td>{convertTimestamp(resa.data.timestamp)}</td>
+        <td>
+          {resa.data.reglement === 0 ? (
+            <span>Non reglé</span>
+          ) : (
+            <span>{resa.data.reglement}</span>
+          )}
+        </td>
+      </>
+    )}
+  </tr>
+))}
           </tbody>
         </table>
       ) : (
