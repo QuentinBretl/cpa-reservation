@@ -50,18 +50,20 @@ function CreerReservation({ currentDay }) {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+
+    // Mettre en majuscules le champ nom avant l'envoi à la base de données
     const formDataCopy = {
       ...formData,
+      nom: formData.nom.toUpperCase(),
       timestamp: serverTimestamp(),
     };
-
-    const docRef = await addDoc(collection(db, 'resas'), formDataCopy);
+  
+    // Envoi des données à la base de données
+    await addDoc(collection(db, 'resas'), formDataCopy);
     setLoading(false);
     toast.success('Réservation créée avec succès');
     navigate(
-      `/planning?acti=${searchParams.get('acti')}&date=${searchParams.get(
-        'date'
-      )}`
+      `/planning?acti=${searchParams.get('acti')}&date=${searchParams.get('date')}`
     );
   };
 
@@ -78,36 +80,42 @@ function CreerReservation({ currentDay }) {
   return (
     <section className='content'>
       <div className='planning'>
+        <section className='rounded-section'>
         <div className='heading'>
           <h3> </h3>
-          <h3>{currentDay}</h3>
+          <h3 className='day-title'>{currentDay}</h3>
           <h3></h3>
         </div>
+        <h3 className='acti-title'>{searchParams.get('acti').toUpperCase()}</h3>
+        </section>
         <div className='cr-container'>
-          <form onSubmit={onSubmit}>
+          <form className='add-form' onSubmit={onSubmit}>
             <div className='form-title'>
               <label className='form-label'>Ajouter une réservation</label>
             </div>
-            <label className='form-label'>
-              Nom <span>*</span>
-            </label>
-            <input
-              className='form-input-name'
-              type='text'
-              id='nom'
-              onChange={onMutate}
-              value={nom}
-              maxLength='20'
-              minLength='0'
-              required
-            />
+            <div className='double-input'>
+            <div className='form-input'>
+              <label className='form-label'>
+                Nom <span>*</span>
+              </label>
+              <input
+                className='form-input-prompt'
+                type='text'
+                id='nom'
+                onChange={onMutate}
+                value={nom}
+                maxLength='15'
+                minLength='0'
+                required
+              />
+              </div>
 
             <div className='form-input'>
               <label className='form-label'>
                 Numéro de télephone<span>*</span>
               </label>
               <input
-                className='form-input-phone'
+                className='form-input-prompt'
                 type='text'
                 id='tel'
                 value={tel}
@@ -117,10 +125,11 @@ function CreerReservation({ currentDay }) {
                 required
               />
             </div>
+            </div>
             <div className='form-input'>
               <label className='form-label'>Email</label>
               <input
-                className='form-input-email'
+                className='form-input-prompt'
                 type='text'
                 id='mail'
                 value={mail}
@@ -130,12 +139,13 @@ function CreerReservation({ currentDay }) {
                 required
               />
             </div>
+            <div className='double-input'>
             <div className='form-input'>
               <label className='form-label'>
                 Adultes<span>*</span>
               </label>
               <input
-                className='form-input-name'
+                className='form-input-prompt'
                 type='number'
                 id='nb_adultes'
                 value={nb_adultes}
@@ -150,7 +160,7 @@ function CreerReservation({ currentDay }) {
                 Enfants (7-15 ans)<span>*</span>
               </label>
               <input
-                className='form-input-name'
+                className='form-input-prompt'
                 type='number'
                 id='nb_enfants'
                 value={nb_enfants}
@@ -160,8 +170,9 @@ function CreerReservation({ currentDay }) {
                 required
               />
             </div>
+            </div>
             {searchParams.get('acti') === 'pah' && (
-              <div className='form-input'>
+              <div className='form-input-prompt'>
                 <label className='form-label'>
                   Bambins (3-6 ans)<span>*</span>
                 </label>

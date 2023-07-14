@@ -424,3 +424,122 @@ th{
   font-size: 22px;
   color: var(--red);
 }
+
+/* CREER RESERVATION PAGE */
+
+.day-title{
+  margin-top: 100px;
+  font-size: 1.4em;
+  color: white;
+
+}
+.acti-title{
+  margin-top: 75px;
+  font-size: 2em;
+  text-align: center;
+  color: white;
+  z-index: 2;
+}
+
+.rounded-section{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 30vh;
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.rounded-section .heading{
+  position: relative;
+  z-index: 1;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.rounded-section::before{
+  content: '';
+  position: absolute;
+  top: 0;
+  left:0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, rgba(19,140,224,1) 10%, rgba(133,227,255,1) 100%);
+  border-radius: 0 0 50% 50%/0 0 100% 100%;
+  transform: scaleX(1.5);
+}
+
+.cr-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.add-form{
+  width: 30vw;
+  margin-top: 50px;
+  font-size: 1.1em;
+}
+
+.form-title{
+  text-align: center;
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.double-input{
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.form-input{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.form-label{
+  margin: 5px 0;
+}
+
+.form-input-prompt:focus{
+  border: 1px solid rgba(19,140,224,1);
+}
+
+.form-input-prompt{
+  outline-style: none;
+  box-shadow: none;
+  border-color: transparent;
+  height: 25px;
+  padding: 5px;
+  border: 1px solid rgb(194, 194, 194);
+  border-radius: 5px;
+}
+
+.submit-btn{
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  cursor: pointer;
+  width: 50%;
+  padding: 10px 0px;
+  color: white;
+  background-image: linear-gradient(to right, rgba(19,140,224,1) 10%, rgba(133,227,255,1) 100%);
+  background-size: 200% auto;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  transition: 0.2s;
+}
+
+.submit-btn:hover {
+  background-position: right center; 
+  text-decoration: none;
+}
+

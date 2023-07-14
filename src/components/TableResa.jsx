@@ -96,13 +96,6 @@ function TableResa({ creneau }) {
     setEditData(resa);
   };
   
-  function handleOptionChange(resa, selectedOptions) {
-    const updatedResa = { ...resa };
-    updatedResa.data.reglement = selectedOptions;
-    setEditData(updatedResa);
-  }
-  
-  
   const handleDelete = async (resa) => {
     try {
       const docRef = doc(db, 'resas', resa.id);
@@ -118,7 +111,8 @@ function TableResa({ creneau }) {
         } 
       }
     } catch (error) {
-      // Gérez les erreurs lors de la suppression de la réservation
+      console.error()
+      console.log(error)
     }
   };
 
@@ -207,7 +201,7 @@ function TableResa({ creneau }) {
   const convertTimestamp = (timestamp) => {
     let firebaseDate = timestamp.toDate();
     let dd = firebaseDate.getDate(); // Declare dd here
-    let mm = firebaseDate.getMonth(); // Declare mm here
+    let mm = firebaseDate.getMonth()+1; // Declare mm here
     
     if (dd < 10) {
       dd = '0' + dd;
