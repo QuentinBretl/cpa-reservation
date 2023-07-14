@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { FaPlus, FaTimes, FaUserPlus, FaEdit, FaMinusSquare } from 'react-icons/fa';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import {
   collection,
   getDocs,
@@ -22,6 +22,8 @@ import moment from 'moment/moment';
 import 'moment/locale/fr';
 import Paiement from './Paiement';
 
+
+
 function TableResa({ creneau }) {
   const [currentActi, setCurrentActi] = useState(null);
   const [annuls, setAnnuls] = useState(null);
@@ -40,6 +42,64 @@ function TableResa({ creneau }) {
   const [nbAdultes, setNbAdultes] = useState(0);
   const [day, setDay] = useState(null);
   const [editData, setEditData] = useState(null);
+
+  const navigate = useNavigate();
+
+  const fetchAnnulations = async () => {
+    try {
+      const annulRef = collection(db, 'annulations');
+      const q = query(
+        annulRef,
+        where('acti', '==', searchParams.get('acti')),
+        where('date', '==', searchParams.get('date')),
+        where('creneau', '==', creneau)
+      );
+      const querySnap = await getDocs(q);
+
+      const annuls = [];
+
+      querySnap.forEach((doc) => {
+        return annuls.push({
+          id: doc.id,
+          data: doc.data(),
+        });
+      });
+
+      setAnnuls(annuls);
+      setLoading(false);
+      console.log(annuls);
+    } catch (error) {
+      toast.error('Impossible de charger les données...');
+    }
+  };
+
+  //Req à la bdd les résas
+  const fetchResas = async () => {
+    try {
+      const resasRef = collection(db, 'resas');
+      const q = query(
+        resasRef,
+        where('acti', '==', searchParams.get('acti')),
+        where('date', '==', searchParams.get('date')),
+        where('creneau', '==', creneau)
+      );
+      const querySnap = await getDocs(q);
+
+      const resas = [];
+
+      querySnap.forEach((doc) => {
+        return resas.push({
+          id: doc.id,
+          data: doc.data(),
+        });
+      });
+
+      setResas(resas);
+      setLoading(false);
+    } catch (error) {
+      toast.error('Impossible de charger les données...');
+    }
+  };
 
   const onClick = (e) => {
     if (!loggedIn) {
@@ -62,8 +122,12 @@ function TableResa({ creneau }) {
           collection(db, 'annulations'),
           formDataCancel
         );
-        window.location.reload(false);
-      } else {
+        await fetchAnnulations(); // Mettre à jour les annulations
+        navigate(
+          `/planning?acti=${searchParams.get('acti')}&date=${searchParams.get('date')}`
+        );
+        console.log('Annulé!')
+        toast.success('Créneau annulé avec succès')
       }
     }
   };
@@ -71,7 +135,7 @@ function TableResa({ creneau }) {
   const onClickMaintainSlot = async (e) => {
     if (!loggedIn) {
       e.preventDefault();
-      toast.error('Connectez-vous pour pouvoir maintenir le créneau');
+      toast.error('Connectez-vous pour pouvoiar maintenir le créneau');
     } else {
       e.preventDefault();
       let confirmation = window.confirm(
@@ -79,7 +143,11 @@ function TableResa({ creneau }) {
       );
       if (confirmation) {
         await deleteDoc(doc(db, 'annulations', annuls[0].id));
-        window.location.reload(false);
+        await fetchAnnulations(); // Mettre à jour les annulations
+        navigate(
+          `/planning?acti=${searchParams.get('acti')}&date=${searchParams.get('date')}`
+        );
+        toast.success('Créneau maintenu avec succès!')
       } else {
       }
     }
@@ -138,61 +206,7 @@ function TableResa({ creneau }) {
     parseObject();
 
     // Req à la bdd les annulations
-    const fetchAnnulations = async () => {
-      try {
-        const annulRef = collection(db, 'annulations');
-        const q = query(
-          annulRef,
-          where('acti', '==', searchParams.get('acti')),
-          where('date', '==', searchParams.get('date')),
-          where('creneau', '==', creneau)
-        );
-        const querySnap = await getDocs(q);
-
-        const annuls = [];
-
-        querySnap.forEach((doc) => {
-          return annuls.push({
-            id: doc.id,
-            data: doc.data(),
-          });
-        });
-
-        setAnnuls(annuls);
-        setLoading(false);
-        console.log(annuls);
-      } catch (error) {
-        toast.error('Impossible de charger les données...');
-      }
-    };
-
-    //Req à la bdd les résas
-    const fetchResas = async () => {
-      try {
-        const resasRef = collection(db, 'resas');
-        const q = query(
-          resasRef,
-          where('acti', '==', searchParams.get('acti')),
-          where('date', '==', searchParams.get('date')),
-          where('creneau', '==', creneau)
-        );
-        const querySnap = await getDocs(q);
-
-        const resas = [];
-
-        querySnap.forEach((doc) => {
-          return resas.push({
-            id: doc.id,
-            data: doc.data(),
-          });
-        });
-
-        setResas(resas);
-        setLoading(false);
-      } catch (error) {
-        toast.error('Impossible de charger les données...');
-      }
-    };
+    
     fetchResas();
     fetchAnnulations();
     console.log(resas);

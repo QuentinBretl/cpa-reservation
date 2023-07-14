@@ -1,10 +1,12 @@
 :root{
   --secondary: #ffffff;
   --tertiary: #057cc4;
+  --lightblue: rgba(133,227,255,1);
   --text: #564734;
   --color: #0c1821;
   --red: #e31a10;
   --orange: #ff6600;
+  --green: #588E58;
 }
 
 code {
@@ -97,6 +99,16 @@ main{
 }
 
 .planning{
+  background-color: var(--secondary);
+  border-radius: 8px;
+  width: 100%;
+  height: 100%;
+}
+
+.planning-create{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   background-color: var(--secondary);
   border-radius: 8px;
   width: 100%;
@@ -481,7 +493,6 @@ th{
 
 .add-form{
   width: 30vw;
-  margin-top: 50px;
   font-size: 1.1em;
 }
 
@@ -502,6 +513,7 @@ th{
   display: flex;
   flex-direction: column;
   width: 100%;
+  margin-top: 10px;
 }
 
 .form-label{
@@ -525,7 +537,9 @@ th{
 .submit-btn{
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  margin: 0 auto;
+  margin-top: 30px;
+  text-transform: uppercase;
   cursor: pointer;
   width: 50%;
   padding: 10px 0px;
@@ -541,5 +555,14 @@ th{
 .submit-btn:hover {
   background-position: right center; 
   text-decoration: none;
+}
+
+.form-label span{
+  color: var(--orange);
+}
+
+.orange{
+  color: var(--orange);
+  margin-left: 20px;
 }
 

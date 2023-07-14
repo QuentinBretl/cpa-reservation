@@ -79,7 +79,7 @@ function CreerReservation({ currentDay }) {
   }
   return (
     <section className='content'>
-      <div className='planning'>
+      <div className='planning-create'>
         <section className='rounded-section'>
         <div className='heading'>
           <h3> </h3>
@@ -96,7 +96,7 @@ function CreerReservation({ currentDay }) {
             <div className='double-input'>
             <div className='form-input'>
               <label className='form-label'>
-                Nom <span>*</span>
+                Nom<span>*</span>
               </label>
               <input
                 className='form-input-prompt'
@@ -172,12 +172,12 @@ function CreerReservation({ currentDay }) {
             </div>
             </div>
             {searchParams.get('acti') === 'pah' && (
-              <div className='form-input-prompt'>
+              <div className='form-input'>
                 <label className='form-label'>
                   Bambins (3-6 ans)<span>*</span>
                 </label>
                 <input
-                  className='form-input-name'
+                  className='form-input-prompt'
                   type='number'
                   id='nb_bambins'
                   value={nb_bambins}
@@ -193,6 +193,7 @@ function CreerReservation({ currentDay }) {
             </button>
           </form>
         </div>
+        <p className='orange'>* Champs requis</p>
       </div>
     </section>
   );
