@@ -39,9 +39,10 @@ function TableResa({ creneau }) {
     date: searchParams.get('date'),
     creneau: creneau,
   });
-  const [nbAdultes, setNbAdultes] = useState(0);
   const [day, setDay] = useState(null);
   const [editData, setEditData] = useState(null);
+  //Variable de calcul du nb total de personnes sur le créneau
+  const [total, setTotal] = useState(0);
 
   const navigate = useNavigate();
 
@@ -212,6 +213,16 @@ function TableResa({ creneau }) {
     console.log(resas);
   }, []);
 
+  useEffect(() => {
+    let calculatedTotal = 0;
+    if (resas && resas.length > 0) {
+      resas.forEach((resa) => {
+        calculatedTotal += parseInt(resa.data.nb_adultes) + parseInt(resa.data.nb_enfants) + parseInt(resa.data.nb_bambins);
+      });
+    }
+    setTotal(calculatedTotal);
+  }, [resas]);
+
   const convertTimestamp = (timestamp) => {
     let firebaseDate = timestamp.toDate();
     let dd = firebaseDate.getDate(); // Declare dd here
@@ -271,6 +282,7 @@ function TableResa({ creneau }) {
             <h3>Ajouter</h3>
           </button>
         </Link>
+        <h3>Total : {total}/12</h3>
           <button className='remove-slot' onClick={onClickRemoveSlot}>
             <FaTimes className='remove-slot-icon' />
             <h3>Annuler</h3>
@@ -299,6 +311,7 @@ function TableResa({ creneau }) {
           </thead>
           <tbody>
           {resas.map((resa) => (
+            
   <tr key={resa.id}>
     {editData && editData.id === resa.id ? (
       <>
